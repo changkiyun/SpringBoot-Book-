@@ -9,19 +9,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Entity
 @Getter
-public class Article {
+public class Member {
     @Id
     @GeneratedValue
     private Long id;
     @Column
-    private String title;
+    private String email;
     @Column
-    private String content;
-
-
+    private String password;
 }
