@@ -2,8 +2,10 @@ package com.example.firstpriject.controller;
 
 import com.example.firstpriject.dto.ArticleForm;
 import com.example.firstpriject.dto.MemberForm;
+import com.example.firstpriject.entity.Article;
 import com.example.firstpriject.entity.Member;
 import com.example.firstpriject.repository.MemberRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -57,7 +59,30 @@ public class MemberController {
         return "members/index";
     }
 
+    @GetMapping("/members/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        Member findMember = memberRepository.findById(id).orElse(null);
+        model.addAttribute("member", findMember);
 
+        return "members/edit";
+    }
 
+    @PostMapping("/members/update")
+    public String update(MemberForm form) {
+        log.info(form.toString());
+        Member memberEntity = form.toEntity();
+        Member target = memberRepository.findById(memberEntity.getId()).orElse(null);
+        if (target != null) {
+            memberRepository.save(memberEntity);
+        }
+        return "redirect:/members/" + memberEntity.getId();
+    }
+
+    @PostConstruct
+    private void testData() {
+        memberRepository.save(new Member(null, "aaaa", "1111"));
+        memberRepository.save(new Member(null, "bbbb", "2222"));
+        memberRepository.save(new Member(null, "cccc", "3333"));
+    }
 
 }

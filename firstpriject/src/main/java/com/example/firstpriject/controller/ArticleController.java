@@ -3,6 +3,7 @@ package com.example.firstpriject.controller;
 import com.example.firstpriject.dto.ArticleForm;
 import com.example.firstpriject.entity.Article;
 import com.example.firstpriject.repository.ArticleRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,42 @@ public class ArticleController {
         model.addAttribute("articleList", articleEntityList);
         // 3. 뷰 페이지 설정하기
         return "articles/index";
+    }
+
+    @GetMapping("/articles/{id}/edit")
+    public String edit(@PathVariable Long id, Model model) {
+        Article articleEntity = articleRepository.findById(id).orElse(null);
+        model.addAttribute("article", articleEntity);
+
+        return "articles/edit";
+    }
+
+    @PostMapping("/articles/update")
+    public String update(ArticleForm form) {
+        log.info("form= {}", form);
+
+        // 1. DTO를 엔티티로 변환하기
+        Article articleEntity = form.toEntity();
+        log.info(articleEntity.toString());
+
+        // 2. 엔티티를 DB에 저장하기
+        Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+        if (target != null) {
+            articleRepository.save(articleEntity);
+        }
+
+        // 3. 수정 결과 페이지로 리다이렉트하기
+
+        return "redirect:/articles/" + articleEntity.getId();
+    }
+
+
+
+    @PostConstruct
+    private void testData() {
+        articleRepository.save(new Article(null, "aaaa", "1111"));
+        articleRepository.save(new Article(null, "bbbb", "2222"));
+        articleRepository.save(new Article(null, "cccc", "3333"));
     }
 
 }
