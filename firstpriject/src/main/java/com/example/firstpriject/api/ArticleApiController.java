@@ -4,6 +4,7 @@ import com.example.firstpriject.dto.ArticleForm;
 import com.example.firstpriject.entity.Article;
 import com.example.firstpriject.repository.ArticleRepository;
 import com.example.firstpriject.service.ArticleService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 public class ArticleApiController {
     @Autowired
@@ -46,7 +48,6 @@ public class ArticleApiController {
                 ResponseEntity.status(HttpStatus.OK).body(updated):
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-
 
     //DELETE
     @DeleteMapping("/api/articles/{id}")
