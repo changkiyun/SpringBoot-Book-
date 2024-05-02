@@ -39,7 +39,7 @@ public class CoffeeApiController {
         return (saved != null) ?
                 ResponseEntity.status(HttpStatus.OK).body(saved) :
                 ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        //update
+        //updateCoffee
     }
 
     //수정
